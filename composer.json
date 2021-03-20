@@ -1,0 +1,12 @@
+{
+    "name": "wieslaw/mvc",
+    "authors": [
+        {
+            "name": "Wieslaw Kawulok",
+            "email": "info@dwstudio.cz"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "^2.8"
+    }
+}
