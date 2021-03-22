@@ -99,9 +99,81 @@ class sportsController
     }
   
   public function update()
+  {
+    try
+    {
+      if(isset($_POST['updatebtn']))
+      {
+        $sporttb=unserialize($_SESSION['sporttbl0']);
+        $sporttb->$id = trim($_POST['id']);
+        $sporttb->category = trim($_POST['category']);
+        $sporttb->name = trim($_POST['name']);
+        //check validation
+        $chk=$this->checkValidation($sporttb);
+        if($chk)
+        {
+          //call insert record
+          $pid = $this -> objsm ->insertRecord($sporttb);
+          if($pid>0){
+            $thiis->list();
+            }else{
+              echo "Somthing is wrong..., try again";
+            }
+        }else
+        {
+          $_SESSION['sporttbl0']=serialize($sporttb);//add session obj
+          $this->pageRedirect("view/update.php");
+        }
+      }elseif(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
+        $id=$_GET['id'];
+        $result=$this->objsm->selectRecord($id);
+        $row=mysql_fetch_array($result);
+        $sporttb=new sports();
+        $sporttb->id=$row["id"];
+        $sporttb->name=$row["name"];
+        $sporttb->category=$row["category"];
+        $_SESSION['sporttbl0']=serialize($sporttb);
+        $this->pageRedirect("view/update.php");
+      }else{
+        echo "Invalid operation.";
+      }
+      catch (Exception $e)
+      {
+        $this->close_db();
+        throw $e;
+      }  
+    }
+  }
+    //delete record
+  public function delete()
+  {
+    try
+    {
+      if(isset($_GET['id']))
+      {
+        $id=$_GET['id'];
+        $res=$this->objsm->deleteRecord($id);
+        if($res){
+          $this->pageRedirect('index.php');
+        }else{
+          echo "Something is wrong..., try again.";
+        }
+      }else{
+        echo "Invalid operation.";
+      }
+    }
+    catch (Exception $e)
+    {
+      $this->close_db();
+      throe $e;
+    }
+  }
+    
+  
 
   public function list(){
     $result=$this->objsm->selectRecord(0);
     include "view/list.php";
   }
 }
+?>
