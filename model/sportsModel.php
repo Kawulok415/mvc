@@ -31,7 +31,7 @@ class sportsModel
         $this->open_db();
         $query=$this->condb->prepare("INSERT INTO sports (category,name) VALUES (?, ?)");
         $query->bind_param("ss",$obj->category,$obj->name);
-        $query->execute;
+        $query->execute();
         $res= $query->get_result();
         $last_id=$this->condb->insert_id;
         $query->close();
@@ -61,7 +61,7 @@ class sportsModel
         $query=$this->condb->prepare("SELECT * FROM sports");
       }
 
-      $query->execute;
+      $query->execute();
       $res= $query->get_result();
       $query->close();
       $this->close_db();
@@ -73,6 +73,50 @@ class sportsModel
         throw new $e;
 
     }
+  }
+
+  public function insertRecord($obj)
+  {
+    try
+    {
+    $this->open_db();
+    $query=$this->condb->prepare("UPDATE sports SET category=?,name=? WHERE id=?");
+    $query->bind_param("ssi",$obj->category,$obj->name,$obj->id);
+    $query->execute();
+    $res= $query->get_result();
+    $query->close();
+    $this->close_db();
+    return true;
+    }
+    catch (Exception $e)
+    {
+        $this->close_db();
+        throw new $e;
+
+    }
+
+  }
+
+  public function deleteRecord($id)
+  {
+    try
+    {
+    $this->open_db();
+    $query=$this->condb->prepare("DELETE FROM sports WHERE id=?");
+    $query->bind_param("i",$id);
+    $query->execute();
+    $res= $query->get_result();
+    $query->close();
+    $this->close_db();
+    return true;
+    }
+    catch (Exception $e)
+    {
+        $this->close_db();
+        throw new $e;
+
+    }
+
   }
 }
  ?>

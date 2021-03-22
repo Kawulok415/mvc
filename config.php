@@ -6,7 +6,7 @@ class config
     $this->host = "localhost";
     $this->user = "root";
     $this->pass = "";
-    $this->db = "";
+    $this->db = "mvc_db";
   }
 }
  ?>
