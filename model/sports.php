@@ -2,15 +2,15 @@
 
 class sports
 {
-  //table fields
+  //pole v tabulce
   public $id;
   public $category;
   public $name;
-  //message strings
+  //zprávy
   public $id_msg;
   public $category_msg;
   public $name_msg;
-  //constructor set default value
+  //constructor pro nastavení hodnot
   function __construct()
   {
     $id=0;$category=$name="";

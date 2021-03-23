@@ -44,22 +44,22 @@ class sportsController
     //validate category
     if(empty($sporttb->category))
     {
-      $sporttb->category_msg = "Field is empty.";$noerror=false;
+      $sporttb->category_msg = "Pole je prázdné.";$noerror=false;
     }
-     elseif(!filter_var($sporttb->category, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/"))));
-      $sporttb->category_msg = "Invalid entry.";$noerror=false;
+     elseif(!filter_var($sporttb->category, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+      $sporttb->category_msg = "Špatný vstup.";$noerror=false;
     
-    else{$sporttb->category_msg = "";}
+    }else{$sporttb->category_msg = "";}
     
     //validate name
     if(empty($sporttb->name))
     {
-      $sporttb->name_msg = "Field is empty.";$noerror=false;
+      $sporttb->name_msg = "Pole je prázdné.";$noerror=false;
     }
-     elseif(!filter_var($sporttb->name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/"))));
-      $sporttb->name_msg = "Invalid entry.";$noerror=false;
+     elseif(!filter_var($sporttb->name, FILTER_VALIDATE_REGEXP, array("options"=>array("regexp"=>"/^[a-zA-Z\s]+$/")))){
+      $sporttb->name_msg = "Špatný vstup.";$noerror=false;
     
-    else{$sporttb->name_msg = "";}
+    }else{$sporttb->name_msg = "";}
     return $noerror;
   }
 
@@ -78,11 +78,11 @@ class sportsController
         if($chk)
         {
           //call insert record
-          $pid = $this -> objsm ->insertRecord($sporttb);
+          $pid = $this -> objsm -> insertRecord($sporttb);
           if($pid>0){
-            $thiis->list();
+            $this->list();
             }else{
-              echo "Somthing is wrong..., try again";
+              echo "Něco je špatně..., zkuste to znova";
             }
         }else
         {
@@ -105,7 +105,7 @@ class sportsController
       if(isset($_POST['updatebtn']))
       {
         $sporttb=unserialize($_SESSION['sporttbl0']);
-        $sporttb->$id = trim($_POST['id']);
+        $sporttb->id = trim($_POST['id']);
         $sporttb->category = trim($_POST['category']);
         $sporttb->name = trim($_POST['name']);
         //check validation
@@ -115,9 +115,9 @@ class sportsController
           //call insert record
           $pid = $this -> objsm ->insertRecord($sporttb);
           if($pid>0){
-            $thiis->list();
+            $this->list();
             }else{
-              echo "Somthing is wrong..., try again";
+              echo "Něco je špatně..., zkuste to znova";
             }
         }else
         {
@@ -127,7 +127,7 @@ class sportsController
       }elseif(isset($_GET["id"]) && !empty(trim($_GET["id"]))){
         $id=$_GET['id'];
         $result=$this->objsm->selectRecord($id);
-        $row=mysql_fetch_array($result);
+        $row=mysqli_fetch_array($result);
         $sporttb=new sports();
         $sporttb->id=$row["id"];
         $sporttb->name=$row["name"];
@@ -137,13 +137,14 @@ class sportsController
       }else{
         echo "Invalid operation.";
       }
+      }
       catch (Exception $e)
       {
         $this->close_db();
         throw $e;
       }  
     }
-  }
+  
     //delete record
   public function delete()
   {
@@ -156,7 +157,7 @@ class sportsController
         if($res){
           $this->pageRedirect('index.php');
         }else{
-          echo "Something is wrong..., try again.";
+          echo "Něco je špatně..., zkuste znova.";
         }
       }else{
         echo "Invalid operation.";
@@ -165,7 +166,7 @@ class sportsController
     catch (Exception $e)
     {
       $this->close_db();
-      throe $e;
+      throw $e;
     }
   }
     

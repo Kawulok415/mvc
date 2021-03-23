@@ -29,7 +29,7 @@ class sportsModel
     try
     {
         $this->open_db();
-        $query=$this->condb->prepare("INSERT INTO sports (category,name) VALUES (?, ?)");
+        $query=$this->condb->prepare("INSERT INTO sports (category, name) VALUES (?, ?)");
         $query->bind_param("ss",$obj->category,$obj->name);
         $query->execute();
         $res= $query->get_result();
