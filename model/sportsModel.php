@@ -75,7 +75,7 @@ class sportsModel
     }
   }
 
-  public function insertRecord($obj)
+  public function updateRecord($obj)
   {
     try
     {
